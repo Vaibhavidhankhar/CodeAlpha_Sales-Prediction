@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Predictor 🌟</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Open+Sans&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== Global Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Open Sans', sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+    /* ===== Animated Background Container ===== */
+    #animated-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: -2;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+    }
+
+    /* Floating dots styles */
+    .floating-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(11, 61, 145, 0.15);
+      animation: floatDot linear infinite;
+      opacity: 0.7;
+      filter: drop-shadow(0 0 3px rgba(11, 61, 145, 0.3));
+    }
+    @keyframes floatDot {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0.7;
+      }
+      50% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(50px);
+        opacity: 0;
+      }
+    }
+
+    /* Floating money doodles styles */
+    .floating-money {
+      position: absolute;
+      color: rgba(11, 61, 145, 0.1);
+      font-size: 36px;
+      font-weight: 900;
+      user-select: none;
+      animation: floatMoney linear infinite;
+      filter: drop-shadow(0 0 4px rgba(11, 61, 145, 0.2));
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+      transform-origin: center center;
+    }
+    @keyframes floatMoney {
+      0% {
+        transform: translateY(100vh) rotate(0deg) scale(1);
+        opacity: 0.4;
+      }
+      50% {
+        opacity: 0.15;
+      }
+      100% {
+        transform: translateY(-15vh) rotate(360deg) scale(0.8);
+        opacity: 0;
+      }
+    }
+
+    /* ===== Background Animation ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, #ffffff33 0%, #a1c4fd00 70%);
+      animation: floatBackground 20s linear infinite;
+      z-index: -1;
+    }
+    @keyframes floatBackground {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(50px, -50px); }
+      100% { transform: translate(0,0); }
+    }
+    /* ===== Title & Headings ===== */
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      color: #0b3d91;
+      font-size: 3rem;
+      text-align: center;
+      margin-top: 50px;
+      text-shadow: 2px 2px 5px #fff5;
+      animation: popIn 1.2s ease forwards;
+      user-select: none;
+    }
+    @keyframes popIn {
+      0% { transform: scale(0); opacity: 0; }
+      70% { transform: scale(1.2); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    h2 {
+      color: #0b3d91;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    /* ===== Side Panel ===== */
+    .side-panel {
+      position: fixed;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 10;
+    }
+    .side-panel button {
+      background: #0b3d91;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+      outline-offset: 4px;
+      outline-color: transparent;
+      user-select: none;
+    }
+    .side-panel button:hover,
+    .side-panel button:focus-visible {
+      transform: scale(1.1);
+      background: #1e5bbf;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+      outline-color: #98c1ff;
+      outline-style: solid;
+    }
+    .side-panel button.active {
+      background: #1459bd;
+      box-shadow: 0 12px 30px rgba(20,89,189,0.6);
+      cursor: default;
+    }
+    /* ===== Sections with fade transition ===== */
+    section {
+      width: 90%;
+      max-width: 900px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 40px;
+      margin: 50px 0;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      transition: opacity 0.5s ease, transform 0.4s ease;
+      opacity: 1;
+      position: relative;
+      min-height: 280px;
+    }
+    section.hide {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px);
+      height: 0;
+      margin: 0;
+      padding: 0 40px;
+      overflow: hidden;
+      box-shadow: none;
+    }
+    section:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 25px 55px rgba(0,0,0,0.18);
+    }
+    /* ===== Form ===== */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    form input {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 2px solid #aaa;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: inset 0 0 6px #e2eefe;
+      background: #f9fbff;
+      font-weight: 600;
+      color: #0b3d91;
+      user-select: text;
+    }
+    form input::placeholder {
+      font-weight: 400;
+      color: #85a9da;
+    }
+    form input:focus {
+      border-color: #0b3d91;
+      box-shadow: 0 0 16px rgba(11, 61, 145, 0.6);
+      outline: none;
+      background: #e7f0ff;
+    }
+    form input:invalid {
+      border-color: #f687a5;
+      background: #f4ced5;
+    }
+    form button {
+      background: #0b3d91;
+      color: #fff;
+      font-weight: 700;
+      padding: 14px 18px;
+      border-radius: 16px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      box-shadow: 0 6px 20px #114bb6cc;
+      user-select: none;
+    }
+    form button:hover,
+    form button:focus-visible {
+      transform: scale(1.1);
+      background: #1e5bbf;
+      box-shadow: 0 12px 30px #1e5bbfcc;
+      outline: none;
+    }
+    /* ===== Output Box ===== */
+    #prediction {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #0b3d91;
+      font-weight: 900;
+      text-align: center;
+      min-height: 2em;
+      user-select: text;
+      letter-spacing: 1px;
+      position: relative;
+    }
+    /* ===== Footer ===== */
+    footer {
+      text-align: center;
+      margin: 50px 0 20px;
+      color: #0b3d91;
+      font-weight: 700;
+      font-size: 1rem;
+      user-select: none;
+    }
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      .side-panel {
+        top: auto;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        flex-direction: row;
+        gap: 10px;
+      }
+      section {
+        padding: 30px 20px;
+      }
+    }
+    /* ===== Confetti Animation ===== */
+    #confetti-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      overflow: visible;
+      z-index: 9999;
+    }
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #0b3d91;
+      opacity: 0.9;
+      border-radius: 3px;
+      animation: confetti-fall linear forwards;
+      will-change: transform;
+    }
+    @keyframes confetti-fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Styles for the dropdown menu */
+    .image-dropdown {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .image-dropdown label {
+      font-size: 1.1rem;
+      color: #0b3d91;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .image-dropdown select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #aaa;
+      font-size: 1rem;
+      color: #0b3d91;
+      background: #f9fbff;
+      cursor: pointer;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .image-dropdown select:focus {
+      border-color: #0b3d91;
+      box-shadow: 0 0 8px rgba(11, 61, 145, 0.4);
+      outline: none;
+    }
+
+    /* Styles for the displayed image */
+    #displayedImage {
+      display: block; /* Ensure the image is on its own line */
+      margin: 20px auto; /* Center the image */
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      max-width: 100%;
+      height: auto;
+      transition: transform 0.3s ease;
+    }
+
+    #displayedImage:hover {
+        transform: scale(1.02); /* Slightly enlarge on hover */
+    }
+
+
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div id="animated-background"></div>
+
+  <!-- Title -->
+  <h1>Sales Predictor 💰</h1>
+
+  <!-- Side Panel -->
+<div class="side-panel" role="navigation" aria-label="Main menu">
+  <button id="btnHome" class="active" onclick="showSection('home')" aria-controls="home" aria-selected="true">Home 🏠</button>
+  <button id="btnImages" onclick="showSection('images')" aria-controls="images" aria-selected="false">Images 🖼️</button>
+</div>
+
+<!-- Home Section -->
+<section id="home" role="region" aria-labelledby="btnHome">
+  <h2>Predict Sales from Advertising Budget</h2>
+  <form id="salesForm" aria-describedby="prediction">
+    <input type="text" id="tv" placeholder="TV Advertising Budget" required aria-required="true" aria-label="TV Advertising Budget" />
+    <input type="text" id="radio" placeholder="Radio Advertising Budget" required aria-required="true" aria-label="Radio Advertising Budget" />
+    <input type="text" id="newspaper" placeholder="Newspaper Advertising Budget" required aria-required="true" aria-label="Newspaper Advertising Budget" />
+    <button type="submit" aria-live="polite">Predict Sales 💹</button>
+  </form>
+  <div id="prediction" role="status" aria-live="polite"></div>
+</section>
+
+<!-- Images Section -->
+<section id="images" role="region" aria-labelledby="btnImages" class="hide">
+  <h2>Visualization & Images</h2>
+  <p style="text-align:center; font-size:1.1rem; color:#333;">
+    Select an image from the dropdown below:
+  </p>
+
+  <!-- Dropdown menu for images -->
+  <div class="image-dropdown">
+    <label for="imageSelect">Choose an image:</label>
+    <select id="imageSelect">
+      <option value="">--Select an Image--</option>
+      <!-- Options will be populated by JavaScript -->
+    </select>
+  </div>
+
+  <div style="text-align:center;">
+    <img
+      id="displayedImage"
+      src="https://via.placeholder.com/600x300?text=Select+an+Image"
+      alt="Displayed Image"
+      style="border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.2); max-width: 100%; height: auto;"
+    />
+  </div>
+</section>
+
+<!-- Confetti Container -->
+<div id="confetti-container"></div>
+
+<!-- Footer -->
+<footer>© 2025 Sales Predictor App</footer>
+
+<!-- JS -->
+<script>
+  const homeSection = document.getElementById('home');
+  const imagesSection = document.getElementById('images');
+  const btnHome = document.getElementById('btnHome');
+  const btnImages = document.getElementById('btnImages');
+  const predictionEl = document.getElementById('prediction');
+  const confettiContainer = document.getElementById('confetti-container');
+  const bgContainer = document.getElementById('animated-background');
+  const imageSelect = document.getElementById('imageSelect');
+  const displayedImage = document.getElementById('displayedImage');
+
+  // List of your generated PNG image filenames
+  const imageFiles = [
+    'outliers_boxplot.png',
+    'outliers_individual_boxplots.png',
+    'independent_variable_histograms.png',
+    'all_features_histograms.png',
+    'advertising_vs_sales_regplots.png',
+    'advertising_vs_sales_pairplot.png',
+    'advertising_vs_sales_scatterplots.png',
+    'numerical_features_pairplot.png',
+    'sales_distribution_histplot.png',
+    'sales_distribution_histplot_bins30.png',
+    'advertising_vs_sales_distribution_plots.png',
+    'tv_sales_radio_newspaper_scatterplot.png',
+    'sales_distribution_after_sqrt_transformation.png',
+    'linear_regression_actual_vs_predicted.png',
+    'ridge_regression_actual_vs_predicted.png',
+    'lasso_regression_actual_vs_predicted.png',
+    'decision_tree_actual_vs_predicted.png',
+    'random_forest_actual_vs_predicted.png',
+    'gradient_boosting_actual_vs_predicted.png',
+    'support_vector_regression_actual_vs_predicted.png',
+    'k_nearest_neighbors_actual_vs_predicted.png',
+    'xgboost_actual_vs_predicted.png',
+    'correlation_matrix_heatmap.png'
+  ];
+
+
+  // Section show/hide with fade effect
+  function showSection(section) {
+    if (section === 'home') {
+      fadeOut(imagesSection, () => {
+        imagesSection.classList.add('hide');
+        imagesSection.style.pointerEvents = 'none';
+        fadeIn(homeSection);
+        homeSection.classList.remove('hide');
+        homeSection.style.pointerEvents = 'auto';
+        btnHome.classList.add('active');
+        btnImages.classList.remove('active');
+        btnHome.setAttribute('aria-selected', 'true');
+        btnImages.setAttribute('aria-selected', 'false');
+      });
+    } else { // section === 'images'
+      fadeOut(homeSection, () => {
+        homeSection.classList.add('hide');
+        homeSection.style.pointerEvents = 'none';
+        fadeIn(imagesSection);
+        imagesSection.classList.remove('hide');
+        imagesSection.style.pointerEvents = 'auto';
+        btnImages.classList.add('active');
+        btnHome.classList.remove('active');
+        btnImages.setAttribute('aria-selected', 'true');
+        btnHome.setAttribute('aria-selected', 'false');
+        // Populate dropdown when navigating to Images section
+        populateImageDropdown();
+      });
+    }
+  }
+  function fadeOut(element, callback) {
+    element.style.opacity = 1;
+    let opacity = 1;
+    const fade = () => {
+      opacity -= 0.05;
+      if (opacity <= 0) {
+        element.style.opacity = 0;
+        if (callback) callback();
+      } else {
+        element.style.opacity = opacity;
+        requestAnimationFrame(fade);
+      }
+    };
+    fade();
+  }
+  function fadeIn(element) {
+    element.style.opacity = 0;
+    let opacity = 0;
+    const fade = () => {
+      opacity += 0.05;
+      if (opacity >= 1) {
+        element.style.opacity = 1;
+      } else {
+        element.style.opacity = opacity;
+        requestAnimationFrame(fade);
+      }
+    };
+    fade();
+  }
+
+  // Confetti effect on prediction
+  function createConfetti() {
+    const colors = ['#0b3d91', '#1e5bbf', '#71a3ff', '#a1c4fd'];
+    const count = 40;
+    for (let i = 0; i < count; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.top = '-10px';
+      confetti.style.width = confetti.style.height = (Math.random() * 7 + 7) + 'px';
+      confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      confetti.style.animationDelay = (Math.random() * 1) + 's';
+      confettiContainer.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 5000);
+    }
+  }
+
+  // Populate the image dropdown with filenames
+  function populateImageDropdown() {
+      // Clear existing options except the first one
+      imageSelect.innerHTML = '<option value="">--Select an Image--</option>';
+      imageFiles.forEach(fileName => {
+          const option = document.createElement('option');
+          option.value = fileName;
+          option.textContent = fileName;
+          imageSelect.appendChild(option);
+      });
+  }
+
+  // Event listener for dropdown change
+  imageSelect.addEventListener('change', function() {
+      const selectedImage = this.value;
+      if (selectedImage) {
+          // Assuming images are in the 'static' folder relative to your app.py
+          displayedImage.src = `/static/${selectedImage}`;
+          displayedImage.alt = selectedImage; // Update alt text
+      } else {
+          // Display placeholder if no image is selected
+          displayedImage.src = "https://via.placeholder.com/600x300?text=Select+an+Image";
+          displayedImage.alt = "Select an Image Placeholder";
+      }
+  });
+
+
+  // --- Modified Prediction Function to interact with Flask Backend ---
+  document.getElementById('salesForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const tv = document.getElementById('tv').value;
+    const radio = document.getElementById('radio').value;
+    const newspaper = document.getElementById('newspaper').value;
+
+    // Basic validation - check if inputs are empty or contain non-numeric characters except '.'
+     if (!/^\d*\.?\d*$/.test(tv) || !/^\d*\.?\d*$/.test(radio) || !/^\d*\.?\d*$/.test(newspaper) || tv === '' || radio === '' || newspaper === '') {
+        predictionEl.innerText = "Please enter valid numeric values for all fields.";
+        predictionEl.style.color = 'red';
+        return;
+    }
+
+    try {
+        // Send data to Flask backend's /predict route
+        const response = await fetch('/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                tv: parseFloat(tv),
+                radio: parseFloat(radio),
+                newspaper: parseFloat(newspaper)
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const predicted_sales = data.predicted_sales.toFixed(2); // Format to 2 decimal places
+
+        predictionEl.innerText = `💰 Predicted Sales: ${predicted_sales}`;
+        predictionEl.style.color = '#0b3d91'; // Reset color
+        createConfetti(); // Trigger confetti on successful prediction
+
+    } catch (error) {
+        console.error('Error fetching prediction:', error);
+        predictionEl.innerText = "Error predicting sales. Please try again.";
+        predictionEl.style.color = 'red';
+    }
+  });
+
+
+  // Floating dots and money doodles background
+  const dotColors = ['rgba(11, 61, 145, 0.15)', 'rgba(30, 91, 191, 0.12)', 'rgba(163, 179, 255, 0.1)']; // Renamed to avoid conflict
+  const moneySymbols = ['$', '💰', '🪙', '💵'];
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  // Create floating dots
+  for (let i = 0; i < 120; i++) {
+    const dot = document.createElement('div');
+    dot.classList.add('floating-dot');
+    const size = randomRange(8, 20);
+    dot.style.width = size + 'px';
+    dot.style.height = size + 'px';
+    dot.style.left = randomRange(0, 100) + 'vw';
+    dot.style.animationDuration = randomRange(10, 30) + 's';
+    dot.style.animationDelay = randomRange(0, 15) + 's';
+    dot.style.background = dotColors[Math.floor(Math.random() * dotColors.length)]; // Use dotColors
+    bgContainer.appendChild(dot);
+  }
+
+  // Create floating money doodles
+  for (let i = 0; i < 50; i++) {
+    const money = document.createElement('div');
+    money.classList.add('floating-money');
+    money.textContent = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
+    money.style.left = randomRange(0, 100) + 'vw';
+    money.style.fontSize = randomRange(20, 48) + 'px';
+    money.style.animationDuration = randomRange(18, 60) + 's';
+    money.style.animationDelay = randomRange(0, 60) + 's';
+    bgContainer.appendChild(money);
+  }
+
+  // Initial setup: show home section and populate dropdown
+  showSection('home'); // Ensure home is shown initially
+  // populateImageDropdown(); // Populate dropdown when the page loads
+
+</script>
+</body>
+</html>
