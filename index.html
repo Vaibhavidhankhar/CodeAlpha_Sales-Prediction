@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sales Prediction</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Open+Sans&display=swap" rel="stylesheet" />
+  <style>
+    /* Dark theme with lively blue and cyan hues + money doodle background */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, #0a1e3d, #004466);
+      color: #d1e8ff;
+      margin: 0;
+      padding: 40px 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+      position: relative;
+      overflow-x: hidden;
+    }
+    /* Money Doodles Container */
+    #money-doodles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
+      overflow: hidden;
+      filter: drop-shadow(0 0 6px cyan);
+      user-select: none;
+      mix-blend-mode: screen;
+    }
+    /* Money icon styles */
+    .money-icon {
+      position: absolute;
+      font-size: var(--size);
+      color: var(--color);
+      opacity: 0.12;
+      animation: floatUp linear infinite;
+      will-change: transform;
+      user-select: none;
+      text-shadow: 0 0 4px var(--glow);
+    }
+    @keyframes floatUp {
+      0% {
+        transform: translateY(110vh) translateX(0) rotate(0deg) scale(1);
+        opacity: 0.12;
+      }
+      50% {
+        opacity: 0.05;
+      }
+      100% {
+        transform: translateY(-10vh) translateX(30px) rotate(360deg) scale(0.7);
+        opacity: 0.12;
+      }
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 14px #64d9ff, 0 0 40px #4ab3ff;
+      color: #7ae0ff;
+      user-select: none;
+    }
+    p.intro {
+      font-size: 1.15rem;
+      text-align: center;
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 500;
+      color: #a9d8ff;
+    }
+    a.button-long {
+      display: block;
+      text-align: center;
+      background: linear-gradient(90deg, #0ef5ff 0%, #1c88ff 100%);
+      color: #001e2d;
+      font-weight: 900;
+      font-size: 1.7rem;
+      border-radius: 16px;
+      padding: 24px 0;
+      text-decoration: none;
+      box-shadow: 0 8px 28px rgba(28, 136, 255, 0.9);
+      max-width: 400px;
+      margin: 0 auto 4rem auto;
+      user-select: none;
+      cursor: pointer;
+      letter-spacing: 3px;
+      border: 3px solid #2de1ff;
+      transition: background 0.35s ease, box-shadow 0.35s ease, color 0.35s ease;
+    }
+    a.button-long:hover,
+    a.button-long:focus {
+      background: linear-gradient(90deg, #1c88ff 0%, #0ef5ff 100%);
+      box-shadow: 0 14px 40px rgba(30, 219, 255, 0.95);
+      color: #00263f;
+      outline: none;
+    }
+    section.key-methods {
+      background: #09253dcc;
+      border-radius: 15px;
+      padding: 30px 35px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.75);
+      margin-bottom: 50px;
+      color: #c8e4ffcc;
+      text-shadow: 0 0 3px #1cf0ffcc;
+    }
+    section.key-methods h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #3fe6ff;
+      text-shadow: 0 0 8px #00dfff;
+    }
+    section.key-methods h3 {
+      margin-top: 1.5rem;
+      color: #74c4ff;
+      font-weight: 700;
+    }
+    section.key-methods ul {
+      list-style: disc;
+      padding-left: 20px;
+    }
+    section.key-methods ul li {
+      margin-bottom: 0.6rem;
+      font-weight: 500;
+      color: #a6d8ff;
+    }
+    section.key-methods p {
+      margin: 0.5rem 0 1rem 0;
+      font-weight: 400;
+      color: #b9defd;
+    }
+    a { color: #4ae1ff; text-decoration: underline; }
+    a:hover, a:focus { color: #95e9ff; text-decoration: none; }
+
+  </style>
+</head>
+<body>
+  <h1>Sales Prediction</h1>
+  <p class="intro">
+    Sales prediction, or forecasting, is the process of estimating future revenue by analyzing historical data, market trends, and current sales pipeline information. While traditional methods based on historical data can be useful, modern sales prediction leverages advanced statistical and machine learning models for greater accuracy, especially in complex or volatile markets.
+  </p>
+
+  <a href="https://sales-predictor-troj.onrender.com" target="_blank" rel="noopener noreferrer" class="button-long" aria-label="Try Sales Predictor">
+    💰 TRY SALES PREDICTOR
+  </a>
+
+  <!-- Space for embedded prezi video -->
+  <div style="margin-bottom: 50px;" aria-label="Embedded video placeholder">
+    <iframe src="https://prezi.com/p/embed/L1BLM5RZHcIavyKvhSUH/" 
+      id="iframe_container" frameborder="0" 
+      webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" 
+      allow="autoplay; fullscreen" height="500" width="900"></iframe>
+  </div>
+
+  <section class="key-methods" aria-label="Key methods for sales prediction">
+    <h2>Key methods for sales prediction</h2>
+    <p>Sales forecasting methods generally fall into two categories: qualitative and quantitative.</p>
+
+    <h3>Qualitative methods</h3>
+    <p>These methods rely on expert judgment and market research, and are most useful when a business has limited historical data.</p>
+    <ul>
+      <li><strong>Intuitive forecasting:</strong> This approach uses the collective experience and judgment of sales representatives and leaders to estimate future sales.</li>
+      <li><strong>Delphi method:</strong> A more structured approach where a panel of experts anonymously provides forecasts, which are then refined through several rounds to reach a consensus.</li>
+      <li><strong>Market research:</strong> Gathers information on customer buying habits and market trends through surveys and focus groups.</li>
+      <li><strong>Historical analogy:</strong> Compares a new product's potential sales to the sales trajectory of a similar, previously launched product.</li>
+    </ul>
+
+    <h3>Quantitative methods</h3>
+    <p>These techniques use mathematical and statistical models to find patterns and project future sales based on objective data.</p>
+    <ul>
+      <li><strong>Time series analysis:</strong> Uses historical data to identify trends, seasonality, and cyclical patterns. Models include moving averages, exponential smoothing, and ARIMA.</li>
+      <li><strong>Regression analysis:</strong> Analyzes the relationship between sales and other variables, such as marketing spend, promotions, or economic indicators. Multiple linear regression is particularly useful for complex scenarios.</li>
+      <li><strong>Opportunity stage forecasting:</strong> Calculates future sales based on the value of deals currently in the sales pipeline and the probability of closing at each stage.</li>
+      <li><strong>Lead-driven forecasting:</strong> Assigns a value to leads based on their likelihood to convert, relying on lead scoring and conversion rate data.</li>
+      <li><strong>Multivariable analysis:</strong> The most comprehensive method, combining numerous internal and external variables to create a highly nuanced prediction.</li>
+    </ul>
+
+    <h3>The role of machine learning</h3>
+    <p>Machine learning (ML) has revolutionized sales prediction by providing a way to analyze large, complex datasets and identify non-linear relationships that traditional methods often miss.</p>
+    <ul>
+      <li><strong>Advanced models:</strong> Algorithms like Random Forests, XGBoost, and Neural Networks are widely used for their high accuracy and ability to process multiple interacting variables.</li>
+      <li><strong>Automated and scalable:</strong> ML models can automate the prediction process and scale to handle the massive datasets generated by modern businesses, saving time and reducing human error.</li>
+      <li><strong>Enhanced accuracy:</strong> For many businesses, particularly in e-commerce and retail, AI-driven forecasting can significantly outperform standard methods.</li>
+    </ul>
+
+    <h3>Key factors influencing prediction accuracy</h3>
+    <p>Regardless of the method used, sales prediction is affected by a variety of internal and external factors.</p>
+    <ul>
+      <li><strong>Data quality and availability:</strong> Accurate, consistent, and sufficient historical data is the most critical factor for reliable forecasts.</li>
+      <li><strong>Market conditions:</strong> Fluctuations due to competition, economic changes, and technological shifts can disrupt sales patterns.</li>
+      <li><strong>Seasonality and trends:</strong> Consistent seasonal patterns, like holiday shopping, or long-term trends must be identified and accounted for.</li>
+      <li><strong>Company-specific factors:</strong> Internal variables such as pricing changes, marketing campaigns, new product launches, and employee headcount can all influence future sales.</li>
+      <li><strong>Human bias:</strong> Subjectivity and overly optimistic or pessimistic estimates from sales personnel can skew forecasts, making data-driven methods crucial for objectivity.</li>
+    </ul>
+  </section>
+
+  <div id="money-doodles" aria-hidden="true"></div>
+
+  <script>
+    const moneyContainer = document.getElementById('money-doodles');
+    const moneyIcons = ['💰','🪙','💵','💸','💴','💶','💷','💳'];
+    const colors = ['#3deaff', '#17d0ff', '#40b7ff', '#69cdff', '#a3eaff'];
+
+    function getRandom(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+    function createMoneyIcon() {
+      const icon = document.createElement('div');
+      icon.classList.add('money-icon');
+      icon.textContent = moneyIcons[Math.floor(Math.random()*moneyIcons.length)];
+      const size = getRandom(20, 60);
+      icon.style.setProperty('--size', size + 'px');
+      icon.style.setProperty('--color', colors[Math.floor(Math.random()*colors.length)]);
+      icon.style.setProperty('--glow', colors[Math.floor(Math.random()*colors.length)]);
+      icon.style.left = getRandom(0, 100) + 'vw';
+      icon.style.animationDuration = getRandom(25, 60) + 's';
+      icon.style.animationDelay = getRandom(0, 60) + 's';
+      moneyContainer.appendChild(icon);
+    }
+    // Create a bunch of money icons on load
+    for(let i=0; i<40; i++) {
+      createMoneyIcon();
+    }
+  </script>
+</body>
+</html>
