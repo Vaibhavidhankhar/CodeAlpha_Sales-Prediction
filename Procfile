@@ -1,0 +1,1 @@
+web: gunicorn Sales_Predictor.app:app
